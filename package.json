@@ -1,0 +1,29 @@
+{
+  "name": "discova-server",
+  "version": "1.0.0",
+  "description": "The goal of the Discova is to provide anime fans with a platform to discover new anime and track the anime they are watching. This application will be a one-stop destination for all anime-related activities.",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.36.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "hpp": "^0.2.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.9.0",
+    "morgan": "^1.10.0",
+    "superagent": "^8.0.9",
+    "validator": "^13.9.0",
+    "xss-clean": "^0.1.1"
+  }
+}
