@@ -1,3 +1,4 @@
+// represents an operational error
 class OperationalError extends Error {
   constructor(message, statusCode) {
     super(message);

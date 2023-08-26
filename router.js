@@ -5,15 +5,19 @@ import {
   isLoggedIn,
   sendLoggedInUser,
 } from './controllers/auth.js';
-import { search, getAnimeInfo } from './controllers/anime.js';
+import { search, getAnimeInfo, getThemes } from './controllers/anime.js';
 
 const router = express.Router();
 
 // api routes
-router.post('/api/sign-up', signUp); // auth routes
+// auth routes
+router.post('/api/sign-up', signUp);
 router.post('/api/login', login);
 router.get('/api/current-user', isLoggedIn, sendLoggedInUser);
 
-router.get('/api/search', search);
+// anime routes
+router.get(/^\/api\/anime\/search$/, search); // Use regular expression to match exact "search"
 router.get('/api/anime/:aniListId', getAnimeInfo);
+router.get('/api/anime/themes/:aniListId', getThemes);
+
 export default router;

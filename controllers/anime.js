@@ -1,7 +1,9 @@
 import superagent from 'superagent';
 import catchAsyncErr from '../utils/catch-async.js';
-import OperationalError from '../utils/operational-error.js';
-import { fields, fieldsExd } from '../utils/aniList-fields.js';
+import OperationalError from '../classes/operational-error.js';
+import { parseAnimeTheme } from '../utils/anime-utils.js';
+import fields from '../graphql/fields.js';
+import fieldsExd from '../graphql/extended-fields.js';
 
 // search for anime using the aniList api
 export const search = catchAsyncErr(async (req, res, next) => {
@@ -88,4 +90,17 @@ export const getAnimeInfo = catchAsyncErr(async (req, res, next) => {
 
   // send results back to the the client
   res.status(200).json({ animeInfo });
+});
+
+export const getThemes = catchAsyncErr(async (req, res) => {
+  const id = req.params.aniListId;
+  const BASE_URL = `https://api.animethemes.moe/anime?filter[has]=resources&filter[site]=AniList&filter[external_id]=${id}
+                    &include=animethemes.song.artists,animethemes.animethemeentries.videos`;
+
+  const response = await superagent.get(BASE_URL);
+  const { anime } = response.body;
+
+  const themes = anime[0]?.animethemes.map(parseAnimeTheme);
+
+  res.status(200).json({ status: 'success', themes });
 });

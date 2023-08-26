@@ -3,14 +3,9 @@ import validator from 'validator';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-  firstName: {
+  fullName: {
     type: String,
-    required: [true, 'First name is required'],
-    trim: true,
-  },
-  surname: {
-    type: String,
-    required: [true, 'Surname is required'],
+    required: [true, 'A name is required'],
     trim: true,
   },
   username: {
@@ -43,26 +38,13 @@ const userSchema = new mongoose.Schema({
     default: 'user',
     required: [true, 'Role is required'],
   },
-  // Interests: genres user is interested in
-  interests: [String],
-
-  // User preferences
-  preferences: {
-    type: Object,
-    required: true,
-    default: {
-      themes: [],
-      studio: [],
-      character_archetypes: [],
-      source_material: [],
-      duration: '',
-      target_audience: '',
-      rating: '',
-      genre: [],
-      language: '',
-      release_date: '',
+  watchList: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'WatchProgress',
+      default: [],
     },
-  },
+  ],
 });
 
 // document middleware

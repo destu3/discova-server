@@ -2,8 +2,7 @@ import mongoose from 'mongoose';
 
 const WatchProgressSchema = new mongoose.Schema({
   anime: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Anime',
+    type: String,
     required: [true, 'Anime field is required'],
   },
   user: {

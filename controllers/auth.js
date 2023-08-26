@@ -3,7 +3,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
 import User from '../models/user.js';
 import catchAsyncErr from '../utils/catch-async.js';
-import OperationalError from '../utils/operational-error.js';
+import OperationalError from '../classes/operational-error.js';
 
 // reconfigure for this to work?????
 import dotenv from 'dotenv';
@@ -15,12 +15,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// generates a signed jwt
 const signToken = id => {
   return jsonwebtoken.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
+// sends a jwt cookie to the client along with a response
 const sendToken = (user, statusCode, res) => {
   // sign jwt
   const jwt = signToken(user._id);
@@ -39,9 +41,9 @@ const sendToken = (user, statusCode, res) => {
 
 // Create a new user account
 export const signUp = catchAsyncErr(async (req, res, next) => {
-  const { username, password, email, firstName, surname, image } = req.body;
+  const { username, password, email, fullName, image } = req.body;
 
-  if (!username || !password || !email || !firstName || !surname)
+  if (!username || !password || !email || !fullName)
     throw new OperationalError(
       'Fields missing! Please enter all required fields',
       400
@@ -63,8 +65,7 @@ export const signUp = catchAsyncErr(async (req, res, next) => {
 
   // create and save document
   const user = await User.create({
-    firstName,
-    surname,
+    fullName,
     username,
     email,
     password,
@@ -100,6 +101,7 @@ export const login = catchAsyncErr(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
+// checks if a user is logged in
 export const isLoggedIn = async (req, res, next) => {
   const verifyToken = promisify(jsonwebtoken.verify);
 
@@ -123,19 +125,16 @@ export const isLoggedIn = async (req, res, next) => {
 
     user.password = undefined;
 
-    // access user in pug templates and other middleware
-    res.locals.user = user;
+    // access user other middleware
     req.user = user;
   } catch (err) {
-    // console.log(
-    //   'User not logged in, user info will not be available in pug templates or an error has occurred in the verification of the token'
-    // );
     return next();
   }
 
   next();
 };
 
+// sends the logged in users details
 export const sendLoggedInUser = (req, res) => {
   const user = req.user;
   res.status(200).json({ user });

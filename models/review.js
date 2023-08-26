@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 const reviewSchema = new mongoose.Schema({
   // Reference to the parent anime document
   anime: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Anime',
+    type: String,
     required: [true, 'Anime id is required'],
   },
   // Reference to the parent user document

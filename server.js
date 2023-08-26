@@ -9,6 +9,7 @@ import app from './app.js';
 
 const connString = process.env.DB_CONNECTION_STRING;
 
+// connect to mongoDb server
 mongoose.set('strictQuery', false);
 mongoose
   .connect(connString, {
@@ -17,8 +18,8 @@ mongoose
   })
   .then(() => console.log('Connected to remote database server'));
 
-// start server
 const port = process.env.DEV_PORT;
+// start server
 app.listen(port, () =>
   console.log('App listening on port 8000! http://127.0.0.1:8000/')
 );
