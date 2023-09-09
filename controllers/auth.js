@@ -32,6 +32,8 @@ const sendToken = (user, statusCode, res) => {
   // set jwt as cookie
   res
     .cookie('token', jwt, {
+      sameSite: 'none',
+      secure: true,
       httpOnly: true,
       expires: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000), // 180 days from now in milliseconds
     })
