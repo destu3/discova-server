@@ -101,8 +101,8 @@ export const login = catchAsyncErr(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-// checks if a user is logged in
-export const isLoggedIn = async (req, res, next) => {
+// checks if a user is authenticated and
+export const isAuthenticated = async (req, res, next) => {
   const verifyToken = promisify(jsonwebtoken.verify);
 
   try {
@@ -111,6 +111,13 @@ export const isLoggedIn = async (req, res, next) => {
     // user is logged in
     if (req.cookies.token) {
       token = req.cookies.token;
+    } else {
+      return next(
+        new OperationalError(
+          'Unauthorized: Please authenticate to access.',
+          401
+        )
+      );
     }
 
     // verify token
@@ -120,7 +127,7 @@ export const isLoggedIn = async (req, res, next) => {
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return next();
+      return next(new OperationalError('User not found: ' + decoded.id, 404));
     }
 
     user.password = undefined;

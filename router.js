@@ -2,22 +2,40 @@ import express from 'express';
 import {
   signUp,
   login,
-  isLoggedIn,
+  isAuthenticated,
   sendLoggedInUser,
 } from './controllers/auth.js';
-import { search, getAnimeInfo, getThemes } from './controllers/anime.js';
+import { addToList, removeFromList } from './controllers/user.js';
+import {
+  search,
+  getAnimeInfo,
+  getThemes,
+  getAnimeDetailsByIds,
+  getPopularThisSeason,
+  getTrending,
+  getPopular,
+  getUpcoming,
+} from './controllers/anime.js';
 
 const router = express.Router();
 
-// api routes
 // auth routes
-router.post('/api/sign-up', signUp);
-router.post('/api/login', login);
-router.get('/api/current-user', isLoggedIn, sendLoggedInUser);
+router.post('/sign-up', signUp);
+router.post('/login', login);
 
 // anime routes
-router.get(/^\/api\/anime\/search$/, search); // Use regular expression to match exact "search"
-router.get('/api/anime/:aniListId', getAnimeInfo);
-router.get('/api/anime/themes/:aniListId', getThemes);
+router.get(/^\/anime\/search$/, search); // Use regular expression to match exact "search"
+router.get('/anime/:aniListId(\\d+)', getAnimeInfo);
+router.get('/anime/themes/:aniListId', getThemes);
+router.get('/anime/details-by-ids', isAuthenticated, getAnimeDetailsByIds);
+router.get('/anime/featured/popular-this-season', getPopularThisSeason);
+router.get('/anime/featured/trending', getTrending);
+router.get('/anime/featured/popular', getPopular);
+router.get('/anime/featured/upcoming', getUpcoming);
+
+// user routes
+router.use(isAuthenticated);
+router.get('/current-user', sendLoggedInUser);
+router.route('/user/list/:animeId').patch(addToList).delete(removeFromList);
 
 export default router;

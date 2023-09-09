@@ -40,8 +40,13 @@ const userSchema = new mongoose.Schema({
   },
   watchList: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'WatchProgress',
+      type: Number,
+      default: [],
+    },
+  ],
+  favourites: [
+    {
+      type: Number,
       default: [],
     },
   ],

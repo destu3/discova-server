@@ -35,7 +35,7 @@ app.use(mongoSanitize());
 app.use(hpp());
 
 // mount router
-app.use('/', router);
+app.use('/api', router);
 
 // handle unhandled routes
 app.all('*', async (req, res, next) => {
