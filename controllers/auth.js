@@ -22,21 +22,14 @@ const signToken = id => {
   });
 };
 
-// sends a jwt cookie to the client along with a response
+// sends a jwt to the client
 const sendToken = (user, statusCode, res) => {
   // sign jwt
   const jwt = signToken(user._id);
 
   user.password = undefined;
 
-  // set jwt as cookie
   res
-    .cookie('token', jwt, {
-      sameSite: 'none',
-      secure: true,
-      httpOnly: true,
-      expires: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000), // 180 days from now in milliseconds
-    })
     .status(statusCode)
     .json({ message: `Welcome ${user.username}`, user, token: jwt });
 };
@@ -111,8 +104,11 @@ export const isAuthenticated = async (req, res, next) => {
     let token;
 
     // user is logged in
-    if (req.cookies.token) {
-      token = req.cookies.token;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
+      token = req.headers.authorization.split(' ')[1];
     } else {
       return next(
         new OperationalError(

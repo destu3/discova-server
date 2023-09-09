@@ -6,7 +6,6 @@ import morgan from 'morgan';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import cors from 'cors';
-import cookieParser from 'cookie-parser';
 import router from './router.js';
 import globalErrorHandler from './global-handler.js';
 import OperationalError from './classes/operational-error.js';
@@ -21,8 +20,6 @@ const app = express();
 
 // global middleware
 app.use(express.json());
-
-app.use(cookieParser());
 
 app.use(cors({ origin: true, credentials: true }));
 
