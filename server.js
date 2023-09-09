@@ -18,8 +18,6 @@ mongoose
   })
   .then(() => console.log('Connected to remote database server'));
 
-const port = process.env.DEV_PORT;
+const port = process.env.PROD_PORT;
 // start server
-app.listen(port, () =>
-  console.log('App listening on port 8000! http://127.0.0.1:8000/')
-);
+app.listen(port, () => console.log('App listening for requests'));
