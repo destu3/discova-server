@@ -19,7 +19,8 @@ mongoose
     useUnifiedTopology: true,
     useNewUrlParser: true,
   })
-  .then(() => console.log('Connected to remote database server'));
-
-// start server
-app.listen(port, () => console.log('App listening for requests'));
+  .then(() => {
+    console.log('Connected to remote database server');
+    // start server
+    app.listen(port, () => console.log('App listening for requests'));
+  });
