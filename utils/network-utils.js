@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 // Parses the response and returns data if response is ok. Throws an error with a generic error message or a specific message from the server if response is not ok.
 export const handleResponse = async response => {
   const result = await response.json();
