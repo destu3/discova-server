@@ -8,8 +8,10 @@ import { makeFetchRequest, getMediaArray } from '../utils/network-utils.js';
 
 // search for anime using the aniList api
 export const search = catchAsyncError(async (req, res, next) => {
-  const { search, page, per_page, genres, seasonYear, season, sort } =
-    req.query;
+  let { search, page, per_page, genres, seasonYear, season, sort } = req.query;
+
+  sort = sort === 'AVERAGE SCORE_DESC' ? 'SCORE_DESC' : sort;
+
   const query = `
     query ($search: String, $genres: [String], $seasonYear: Int, $season: MediaSeason, $sort: [MediaSort], $page: Int, $perPage: Int) {
       Page(page: $page, perPage: $perPage) {

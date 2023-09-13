@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // global middleware
-app.use(express.json());
+app.use(express.json({ limit: 500000 }));
 
 app.use(cors({ origin: true, credentials: true }));
 

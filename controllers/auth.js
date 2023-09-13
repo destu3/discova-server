@@ -36,13 +36,17 @@ const sendToken = (user, statusCode, res) => {
 
 // Create a new user account
 export const signUp = catchAsyncErr(async (req, res, next) => {
-  const { username, password, email, fullName, image } = req.body;
+  const { username, password, confirmPassword, email, fullName, image } =
+    req.body;
 
   if (!username || !password || !email || !fullName)
     throw new OperationalError(
       'Fields missing! Please enter all required fields',
       400
     );
+
+  if (password !== confirmPassword)
+    throw new OperationalError("Passwords don't match. Please try again.", 400);
 
   let pfpUrl;
   if (image) {
