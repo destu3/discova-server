@@ -185,7 +185,9 @@ export const getPopularThisSeason = catchAsyncError(async (req, res) => {
           total
           perPage
         }
-        media(type: ANIME, season: ${season}, seasonYear: ${getYear()}, sort: POPULARITY_DESC, isAdult: false) {
+        media(type: ANIME, season: ${season}, seasonYear: ${getYear(
+    season
+  )}, sort: POPULARITY_DESC, isAdult: false) {
           ${fields}
         }
       }
@@ -221,7 +223,7 @@ export const getTrending = catchAsyncError(async (req, res) => {
 // fetch upcoming anime for next season
 export const getUpcoming = catchAsyncError(async (req, res) => {
   const nextSeason = getNextSeason();
-  const year = getYear();
+  const year = getYear(nextSeason);
 
   const query = `
     query ($page: Int, $perPage: Int) {

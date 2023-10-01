@@ -16,9 +16,7 @@ export const parseAnimeTheme = theme => {
 };
 
 // Retrieves the current year.
-export function getYear() {
-  const currentSeason = getSeason();
-
+export function getYear(currentSeason) {
   const year = new Date().getFullYear();
 
   // Get the current year

@@ -46,7 +46,6 @@ export const getMediaArray = async query => {
   const data = await handleResponse(response);
   const pageInfo = data.data.Page.pageInfo;
   const mediaArray = data.data.Page.media;
-
   // Throw error if request was successful but an empty media array is returned
   if (mediaArray.length === 0) {
     throw new Error('No results found. Please try again later');
